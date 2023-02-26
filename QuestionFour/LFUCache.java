@@ -1,21 +1,27 @@
 package QuestionFour;
-
-
+//The code implements an LFU cache in Java using a HashMap and a TreeMap. The LFU cache has a fixed size,
+//        and when the cache reaches its maximum capacity, the least frequently used item is removed to make space
+//        for a new item.The Node class represents an item in the cache, with a key-value pair, and a frequency count.
+//        The DoubleLinkedList class represents a linked list of nodes, where the head node is the least recently used node.
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class LFUCache {
-    private Map<Integer, Node> valueMap = new HashMap<>();
-    private Map<Integer, Integer> countMap = new HashMap<>();
-    private TreeMap<Integer, DoubleLinkedList> frequencyMap = new TreeMap<>();
+    private Map<Integer, Node> valueMap = new HashMap<>(); //maps keys to nodes,
+    private Map<Integer, Integer> countMap = new HashMap<>(); //keys to frequency counts,
+    private TreeMap<Integer, DoubleLinkedList> frequencyMap = new TreeMap<>(); //maps frequency counts to lists of nodes with
+    // that frequency.
     private final int size;
 
     public LFUCache(int n) {
         size = n;
     }
 
-
+//    This method takes an integer argument key and returns the value associated with that key in the cache.
+//    If the key is not in the cache or the cache size is zero, the method returns -1. If the key is in the cache,
+//    the method updates the frequency count of the key in countMap and moves the corresponding node to the correct
+//    position in the frequencyMap. The method then returns the value associated with the key.
     public int get(int key) {
         if (!valueMap.containsKey(key) || size == 0) {
             return -1;
@@ -33,7 +39,8 @@ public class LFUCache {
         frequencyMap.computeIfAbsent(frequency + 1, k -> new DoubleLinkedList()).add(node);
         return valueMap.get(key).value;
     }
-
+//The put() method first checks if the cache is already at its maximum capacity,
+// and if it is, removes the least frequently used item from the cache.
     public void put(int key, int value) {
         if (!valueMap.containsKey(key) && size > 0){
 
@@ -133,15 +140,27 @@ public class LFUCache {
             return n;
         }
     }
-
+//print the LFU
     public static void main(String[] args) {
-        LFUCache  lfuCache = new LFUCache(2);
-        lfuCache.put(1,10);
-        lfuCache.put(2,4);
-        lfuCache.put(3,5);
-        System.out.println("Value for the key: 1 is " +
-                lfuCache.get(1));
-        lfuCache.put(6,7);
-    }
+        LFUCache  cache = new LFUCache(2);
 
+        cache.put(1, 10);
+        cache.put(2, 20);
+
+        System.out.println(cache.get(1)); // Output: 10
+
+        cache.put(3, 30);
+
+        System.out.println(cache.get(2)); // Output: -1
+
+        System.out.println(cache.get(3)); // Output: 30
+
+        cache.put(4, 40);
+
+        System.out.println(cache.get(1)); // Output: -1
+
+        System.out.println(cache.get(3)); // Output: 30
+
+        System.out.println(cache.get(4)); // Output: 40
+    }
 }

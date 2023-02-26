@@ -1,5 +1,8 @@
 package QuestionEight;
-
+//This program uses dynamic programming to find the maximum area of a square that can be formed by the number
+//        0 in a given 2D matrix. It initializes a new 2D array with the same dimensions as the input matrix and
+//        iterates through each element of the input matrix to populate the corresponding element of the new array.
+//        The program then returns the square of the maximum value in the new array as the final output.
 public class Main {
     public static int maxSquareArea(int[][] matrix) {
         int m = matrix.length;

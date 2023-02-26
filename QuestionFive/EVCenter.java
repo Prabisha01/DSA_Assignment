@@ -3,33 +3,41 @@ package QuestionFive;
 import java.util.Arrays;
 
 public class EVCenter {
-        public static void main(String[] args) {
-            int[][] serviceCenters = {{10, 60}, {20, 30}, {30, 30}, {60, 40}};
-            int targetMiles = 100;
-            int startChargeCapacity = 10;
-            int numBatteriesReplaced = countBatteriesReplaced(serviceCenters, targetMiles, startChargeCapacity);
-            System.out.println(numBatteriesReplaced); // Output: 2
-        }
-
-        public static int countBatteriesReplaced(int[][] serviceCenters, int targetMiles, int startChargeCapacity) {
-            int numBatteriesReplaced = 0;
-            int currentMile = 0;
-            int currentChargeCapacity = startChargeCapacity;
-            Arrays.sort(serviceCenters, (a, b) -> a[0] - b[0]); // Sort service centers by distance from source city
-            int n = serviceCenters.length;
-            int i = 0;
-            while (currentMile < targetMiles) {
-                int nextMile = (i == n) ? targetMiles : serviceCenters[i][0];
-                int distanceToNext = nextMile - currentMile;
-                if (distanceToNext > currentChargeCapacity) {
-                    currentChargeCapacity = 0;
-                    numBatteriesReplaced++;
-                } else {
-                    currentChargeCapacity -= distanceToNext;
-                }
-                currentMile = nextMile;
-                i++;
+    public int batteryReplacement(int[][] serviceCenters, int targetMiles, int startChargeCapacity) {
+        // Initialize the number of battery replacements to 0
+        int replacements = 0;
+        // Initialize the remaining miles the car can travel to the starting charge capacity
+        int remainingMiles = startChargeCapacity;
+        // Loop through all service centers
+        for (int i = 0; i < serviceCenters.length; i++) {
+            // Calculate the miles to reach the current service center
+            int milesToService = (i > 0) ? serviceCenters[i][0] - serviceCenters[i - 1][0] : serviceCenters[i][0];
+            // If the remaining miles are not enough to reach the current service center
+            if (remainingMiles < milesToService) {
+                // Increment the number of battery replacements
+                replacements++;
+                // Update the remaining miles to the capacity of the new battery
+                remainingMiles = serviceCenters[i][1];
             }
-            return numBatteriesReplaced;
+            // Update the remaining miles with the miles traveled
+            remainingMiles -= milesToService;
+            // If the remaining miles are enough to reach the destination
+            if (remainingMiles >= targetMiles - serviceCenters[i][0]) {
+                // Return the number of battery replacements
+                return replacements;
+            }
         }
+        // Return the number of battery replacements
+        return replacements;
     }
+    //main method to print the result
+    public static void main(String[] args) {
+        int[][] serviceCenters = {{10, 60}, {20, 30}, {30, 30}, {60, 40}};
+        int targetMiles = 100;
+        int startChargeCapacity = 10;
+        EVCenter solution = new EVCenter();
+        int result = solution.batteryReplacement(serviceCenters, targetMiles, startChargeCapacity);
+        System.out.println("No of battery replacement is : " + result);
+    }
+
+}
