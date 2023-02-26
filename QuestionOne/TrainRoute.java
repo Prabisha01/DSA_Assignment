@@ -65,7 +65,7 @@ public class TrainRoute {
             }
             return -1;
         }
-//printing
+//printing the result
         public static void main(String[] args) {
             int[][] edges = {{0, 1, 5}, {0, 3, 2}, {1, 2, 5}, {3, 4, 5}, {4, 5, 6}, {2, 5, 5}};
             int[] charges = {10, 2, 3, 25, 25, 4};

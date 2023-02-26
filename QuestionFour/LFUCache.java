@@ -23,6 +23,7 @@ public class LFUCache {
 //    the method updates the frequency count of the key in countMap and moves the corresponding node to the correct
 //    position in the frequencyMap. The method then returns the value associated with the key.
     public int get(int key) {
+        //empty
         if (!valueMap.containsKey(key) || size == 0) {
             return -1;
         }
@@ -32,7 +33,7 @@ public class LFUCache {
         int frequency = countMap.get(key);
         frequencyMap.get(frequency).remove(nodeTodelete);
         removeIfListEmpty(frequency);
-        valueMap.remove(key);
+        valueMap.remove(key); //removes key
         countMap.remove(key);
         valueMap.put(key, node);
         countMap.put(key, frequency + 1);

@@ -1,58 +1,52 @@
 package QuestionThree;
 
 public class Pattern {
-    public static void main(String[] args) {
-        String a1 = "tt";
-        String pattern1 = "@";
-        System.out.println(matchesPattern(a1, pattern1));  // Expected output: true
-
-        String a2 = "ta";
-        String pattern2 = "t";
-        System.out.println(matchesPattern(a2, pattern2));  // Expected output: false
-
-        String a3 = "ta";
-        String pattern3 = "t#";
-        System.out.println(matchesPattern(a3, pattern3));  // Expected output: true
-    }
-
-    public static boolean matchesPattern(String a, String pattern) {
-        int aLength = a.length();
+    public static boolean matches(String input, String pattern) {
+        int inputIndex = 0; //intialize the inputIndex
+        int patternIndex = 0; //initialize the patternIndex
+        int inputLength = input.length();
         int patternLength = pattern.length();
-
-        // Edge case: pattern "@" matches entire string.
-        if (pattern.equals("@")) {
-            return a.equals(pattern);
-        }
-
-        // Edge case: pattern length is greater than string length.
-        if (patternLength > aLength) {
-            return false;
-        }
-
-        int i = 0;
-        int j = 0;
-
-        while (i < aLength && j < patternLength) {
-            char aChar = a.charAt(i);
-            char patternChar = pattern.charAt(j);
-
-            if (patternChar == '#') {
-                i++;
-                j++;
-            } else if (patternChar == '@') {
-                // Check if remaining substring of a matches remaining pattern.
-                return a.substring(i).equals(pattern.substring(j + 1));
-            } else {
-                if (aChar != patternChar) {
-                    return false;
+        while (inputIndex < inputLength && patternIndex < patternLength) {
+            char currentChar = pattern.charAt(patternIndex);
+            if (currentChar == '@') {
+                patternIndex++;
+                if (patternIndex == patternLength) {
+                    return true; // The '@' character is at the end of the pattern, so it matches the rest of the input
                 }
-
-                i++;
-                j++;
+                char nextChar = pattern.charAt(patternIndex);
+                while (inputIndex < inputLength && input.charAt(inputIndex) != nextChar) {
+                    inputIndex++;
+                }
+                if (inputIndex == inputLength) {
+                    return false; // Couldn't find the next character after '@' in the input
+                }
+            } else if (currentChar == '#') {
+                inputIndex++;
+                patternIndex++;
+            } else if (input.charAt(inputIndex) == currentChar) {
+                inputIndex++;
+                patternIndex++;
+            } else {
+                return false; // The current character in the pattern does not match the corresponding character in the input
             }
         }
+        return (inputIndex == inputLength && patternIndex == patternLength);
+    }
 
-        // If both pointers reached the end, then the pattern matches the string.
-        return i == aLength && j == patternLength;
+    public static void main(String[] args) {
+        String input = "tt";
+        String pattern = "@";
+        boolean isMatch = matches(input, pattern);
+        System.out.println(isMatch);// return true since there is @
+
+        String input2 = "ta";
+        String pattern2 = "t";
+        boolean isMatch2 = matches(input2, pattern2);
+        System.out.println(isMatch2); //return false since there is no presence
+
+        String input3 = "ta";
+        String pattern3 = "t#";
+        boolean isMatch3 = matches(input3, pattern3);
+        System.out.println(isMatch3); //return true since there is # in the pattern
     }
 }
