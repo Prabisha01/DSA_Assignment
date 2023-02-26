@@ -9,7 +9,7 @@ public class MatrixMultiplication {
     public static void main(String[] args) {
         int n = 5; //size
         int[][] a = new int[n][n]; //array a for 2D matrix
-        int[][] b = new int[n][n];//array b for 4D matrix
+        int[][] b = new int[n][n];//array b for 2D matrix
         int[][] result = new int[n][n];// storing the result
 
 
